@@ -1,0 +1,5 @@
+F0001, chiken, 1.8, Meat, 3, 14/11/2021
+F0002, onion, 0.3, vegetable, 2, 10/09/2021
+F0003, carrot, 0.4, vegetable, 2, 30/09/2021
+F0004, fish, 1.5, meat, 1, 24/09/2021
+F0005, meat, 4.1, meat, 3, 21/9/2021
