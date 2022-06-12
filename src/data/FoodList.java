@@ -7,13 +7,14 @@ import util.Utils;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.StringTokenizer;
+import refrigerator.RefrigeratorInterface;
 
-public class FoodList {
+public class FoodList implements RefrigeratorInterface {
 
-    private ArrayList<Food> foodList = new ArrayList();    
+    private ArrayList<Food> foodList = new ArrayList();
 
+    @Override
     public void addNewFood() {
         String id;
         String name;
@@ -61,6 +62,7 @@ public class FoodList {
 
     }
 
+    @Override
     public void searchFoodByName() {
         if (foodList.isEmpty()) {
             System.out.println("The list is empty. No result found.");
@@ -114,6 +116,7 @@ public class FoodList {
         return -1;
     }
 
+    @Override
     public void removeFoodByID() {
         if (foodList.isEmpty()) {
             System.out.println("The list is empty. There is nothing to remove.");
@@ -138,45 +141,34 @@ public class FoodList {
         System.out.println();
     }
 
+    @Override
     public void printFoodListInDescendingOrderOfExpiredDay() {
         if (foodList.isEmpty()) {
             System.out.println("The list is empty!\n");
             return;
         }
-        Collections.sort(foodList, new Comparator<Food>() {
-            @Override
-            public int compare(Food food1, Food food2) {
-                if (food1.getLongDate() < food2.getLongDate()) {
-                    return 1;
-                } else {
-                    if (food1.getLongDate() == food2.getLongDate()) {
-                        return 0;
-                    } else {
-                        return -1;
-                    }
-                }
-            }
-        });
+        Collections.sort(foodList, new SortFoodByDate());
         System.out.println("The food list in the descending order of expired date");
         System.out.printf("|%-8s|%-10s|%6s|%-10s|%5s|%-12s|\n",
-                        "Food ID", "Food Name", "Weight", "Food Type", "Place", "Expired Date");
+                "Food ID", "Food Name", "Weight", "Food Type", "Place", "Expired Date");
         for (int i = 0; i < foodList.size(); i++) {
             foodList.get(i).displayInfor();
         }
         System.out.println();
     }
 
+    @Override
     public void writeToFile(String file) {
         if (foodList.isEmpty()) {
             System.out.println("The list is empty.\n");
             return;
         }
-        
+
         try {
             FileWriter foodFile = new FileWriter(file);
             for (Food x : foodList) {
                 foodFile.write(x.toString() + "\n");
-             
+
             }
             foodFile.close();
             System.out.println("Successfully wrote to the file.\n");
@@ -185,6 +177,7 @@ public class FoodList {
 
     }
 
+    @Override
     public void readFromFile(String fileIn) {
         try {
             File foodFile = new File(fileIn);
@@ -197,16 +190,16 @@ public class FoodList {
             String details;
             while ((details = br.readLine()) != null) {
                 StringTokenizer stk = new StringTokenizer(details, ",");
-             
-                String id = stk.nextToken().trim().toUpperCase();            
+
+                String id = stk.nextToken().trim().toUpperCase();
                 String name = stk.nextToken().trim().toUpperCase();
                 double weight = Double.parseDouble(stk.nextToken().trim());
                 String type = stk.nextToken().trim().toUpperCase();
                 int place = Integer.parseInt(stk.nextToken().trim());
                 String date = stk.nextToken().trim();
-            
+
                 boolean check = (searchFoodByID(id) < 0 && (Utils.toDate(date) > System.currentTimeMillis()));
-              
+
                 if (check) {
                     foodList.add(new Food(id, name, weight, type, place, date));
                 }

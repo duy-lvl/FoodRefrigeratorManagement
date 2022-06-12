@@ -1,4 +1,4 @@
-package food_management;
+package refrigerator;
 
 import data.FoodList;
 import util.Utils;

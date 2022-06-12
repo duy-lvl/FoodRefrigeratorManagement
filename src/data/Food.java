@@ -90,8 +90,4 @@ public class Food {
         System.out.printf("|%-8s|%-10s|%-6.2f|%-10s|%-5d|%-12s|\n",
                 id, name, weight, type, place, expiredDate);
     }
-
-    public int compareTo(Food that) {
-        return this.expiredDate.compareTo(that.getExpiredDate());
-    }
 }
